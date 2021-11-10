@@ -1,0 +1,34 @@
+{
+  "name": "nodejestut",
+  "version": "1.0.0",
+  "description": "non-helmet_detection website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NineTongnois/non-Helmet_Detection_Website.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NineTongnois/non-Helmet_Detection_Website/issues"
+  },
+  "homepage": "https://github.com/NineTongnois/non-Helmet_Detection_Website#readme",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "bootbox": "^5.5.2",
+    "bootstrap": "^5.1.3",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "jquery": "^3.6.0",
+    "jquery-validation": "^1.19.3",
+    "request": "^2.88.2",
+    "sweetalert2": "^11.1.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
