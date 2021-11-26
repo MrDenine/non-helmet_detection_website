@@ -14,12 +14,31 @@
     
   </header>
 <!-- header -->
-  <div class="container">
-    <div class="row">
-      <div class="col align-self-center main-middle">
-        
+  <div class="container-main">
+    
+  </div>
+  <div class="container-main border px-5 py-5 shadow-lg rounded" style="border-radius: 0.75rem!important;">
+    <form action="login" method="post">
+    <div class="form-login">
+      <h2 class="mb-3 text-center">Sign in</h2>
+      <div class="row mb-2">
+        <label>Email</label>
+        <input class="form-control mb-3" type="email" name ="username" required>
+        <label>Password</label>
+        <input class="form-control " type="password" name ="password" required>
       </div>
+      <div class="row text-right mb-4" style="margin-left: 140px;">
+        <a href="#">Forget Password?</a>
+      </div>
+      <div class="row validate-message">
+
+      </div>
+      <div class="row mb-4">
+        <button class="btn btn-warning" type="submit">Login</button>
+      </div>
+      <p class=" text-center">Don’t have any account?,<a href="/registration"> Register</a></p>
     </div>
+  </form>
   </div>
 <!-- footer -->
 </body>
@@ -32,15 +51,16 @@
 <script src="/plugins/select2/dist/js/select2.min.js" type="text/javascript"> </script>
 
 <script type="text/javascript">
-    var result = '<%- result %> ';
-    console.log(result);
+    var resultJson ='<%-JSON.stringify(data)%>';
+    var resultObject = JSON.parse(resultJson);
+    
     var Feature = (function(){
       return {
-        onclickLogin : function(){
+        submitLogin : function(){
             
         },
         init: function () {
-
+          
         }
       }
     })();

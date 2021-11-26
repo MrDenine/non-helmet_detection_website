@@ -1,5 +1,5 @@
 const config = {};
 
-config.ServiceUrl = 'http://localhost:3000';
+config.servurl = 'http://localhost:3000';
 
 module.exports = config;

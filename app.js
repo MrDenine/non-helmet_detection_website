@@ -2,6 +2,7 @@
 const express = require('express');
 const axios = require('axios');
 const config = require('./config');
+const path = require('path');
 const app = express();
 const port = 8000;
 
@@ -16,19 +17,29 @@ try{
     app.use('/plugins', express.static(__dirname + '/node_modules'));
 
     //connection service validate 
-    axios.get(config.ServiceUrl)
+    axios.get(config.servurl)
         .then(function (res){
             //log result
             console.log('\x1b[36m%s\x1b[0m','[API] '+ res.data.data +' :D');
 
             //Define Routing Path
-            var indexRouter = require('./routes/indexRoute');
+            var indexRouter = require('./routes/indexRoute'); //Index
+            var userIndexRoute = require('./routes/userIndexRoute'); //Home
+            var adminIndexRoute = require('./routes/adminIndexRoute');
+            var registrationRoute = require('./routes/registrationRoute');
+            var forgetPasswordRoute = require('./routes/forgetPasswordRoute');
+            var verificationRoute = require('./routes/verificationRoute');
 
             //Static Routes File
             app.use('/',indexRouter);
+            app.use('/home',userIndexRoute); //Home
+            app.use('/admin',adminIndexRoute);
+            app.use('/registration',registrationRoute);
 
             //Set Views engine
-            app.set('views', './views');
+            
+            // app.set('views', './views');
+            app.set('views', path.join(__dirname, './views'));
             app.set('view engine' , 'ejs');
 
             //Listen on port 3000
