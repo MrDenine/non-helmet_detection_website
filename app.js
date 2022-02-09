@@ -18,19 +18,19 @@ try{
             //Define Routing Path
             var indexRoute = require('./routes/indexRoute');
             var loginRouter = require('./routes/loginRoute'); 
-            // var registrationRoute = require('./routes/registrationRoute');
-            // var forgetPasswordRoute = require('./routes/forgetPasswordRoute');
-            // var verificationRoute = require('./routes/verificationRoute');
+            var home = require('./routes/homeRoute')
 
             //Static Routes File
             app.use('/',indexRoute);
             app.use('/login',loginRouter);
-            // app.use('/home',userIndexRoute); //Home
-            // app.use('/admin',adminIndexRoute);
-            // app.use('/registration',registrationRoute);
+            app.use('/home',home);
 
             //Set Views engine
-            app.set('views', './views');
+            //app.set('views', './views');
+            app.set('views',[
+                path.join(__dirname,'views'),
+                path.join(__dirname,'views/page')
+            ]);
             app.set('view engine' , 'ejs');
 
             //Listen on port 3000
