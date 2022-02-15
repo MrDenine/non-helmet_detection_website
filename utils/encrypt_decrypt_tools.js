@@ -1,16 +1,26 @@
 const crypto = require('crypto');
-const secret = "CPEPROJECT";
+const algorithm = 'aes-256-cbc';
+const key = crypto.randomBytes(32);
+const iv = '77895ad36a5d0126';
+// const iv = crypto.randomBytes(16);
+
 
 module.exports = {
-    encrypt : function (string){
-        var key = crypto.createCipher('aes-128-cbc', secret);
-        var encryptstr = key.update(string, 'utf8', 'hex');
-        encryptstr += key.final('hex');
-        return encryptstr;
+    encrypt : function (text){
+        let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+        let encrypted = cipher.update(text);
+        encrypted = Buffer.concat([encrypted, cipher.final()]);
+        // return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+        return encrypted.toString('hex');
+
     },
-    decrypt : function (string){
-        var key = crypto.createDecipher('aes-128-cbc', secret);
-        var decryptstr = key.update(string, 'hex', 'utf8')
-        return decryptstr;
+    decrypt : function (text){
+        //let iv = Buffer.from(text.iv, 'hex');
+        // let encryptedText = Buffer.from(text.encryptedData, 'hex');
+        let encryptedText = Buffer.from(text, 'hex');
+        let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+        let decrypted = decipher.update(encryptedText);
+        decrypted = Buffer.concat([decrypted, decipher.final()]);
+        return decrypted.toString();
     }
 }

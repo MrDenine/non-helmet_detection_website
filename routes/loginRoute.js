@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const config = require('../config');
+const validation_tools = require('../utils/validation_tools');
 const encrypt_decrypt_tools = require('../utils/encrypt_decrypt_tools');
 const cookieParser = require('cookie-parser');
 const { json } = require('express');
@@ -13,14 +14,13 @@ router.use(bodyParser.json());
 
 router.use(cookieParser());
 
-router.get('/',function(req,res,next){
-    res.render('authen/login',{data:'Test'});
-});
+// router.get('/',function(req,res,next){
+//     console.log('get login')
+// });
 
-router.post('/login',function(req,res,next){
-    var username = req.body.username;
-    var password = req.body.password;
-    
+router.post('/',function(req,res,next){
+    var username = req.body.Username;
+    var password = req.body.Password;
     if(username && password){
         //call postLogin
         axios
@@ -41,25 +41,22 @@ router.post('/login',function(req,res,next){
                     //setCookie
                     res.cookie('UDT', userdata_enc, config.cookie_options);
                     
-                    // //check permission to access [role]_index
-                    // if(permit.isRole(response.data.data[0].role) == "admin"){
-                    //     console.log('');
-                    // } else if (permit.isRole(response.data.data[0].role) == "user"){
-                    //     console.log('');
-                    // } else {
-                    //     res.render('index');
-                    // }
+                    // res.status(200).send(response.data.data[0]);
+                    res.status(200).send('valid');
+                    return;
                 })
                 .catch(function(response){
-                    res.render('index',{data:response});
+                    res.status(400).send(response);
+                    return;
                 });
             } else {
-                res.render('index',{data:'invalid_status'});
+                res.status(200).send('invalid');
+                return;
             }
         })
         .catch(function (error) {
-            //error
-            console.log(error);
+            res.status(400).send(error);
+            return;
         });
     }
 });

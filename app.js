@@ -17,13 +17,21 @@ try{
 
             //Define Routing Path
             var indexRoute = require('./routes/indexRoute');
-            var loginRouter = require('./routes/loginRoute'); 
-            var home = require('./routes/homeRoute')
+            var loginRoute = require('./routes/loginRoute'); 
+            var dashboardRoute = require('./routes/dashboardRoute');
+            var detectionResultRoute = require('./routes/detectionResultRoute');
+            var reportRoute = require('./routes/reportRoute');
+            var userAccountRoute = require('./routes/userAccountRoute');
+            var adminAccountRoute = require('./routes/adminAccountRoute')
 
             //Static Routes File
             app.use('/',indexRoute);
-            app.use('/login',loginRouter);
-            app.use('/home',home);
+            app.use('/login',loginRoute);
+            app.use('/dashboard',dashboardRoute);
+            app.use('/detection-result',detectionResultRoute);
+            app.use('/report',reportRoute);
+            app.use('/user-account',userAccountRoute);
+            app.use('/admin-account',adminAccountRoute);
 
             //Set Views engine
             //app.set('views', './views');
