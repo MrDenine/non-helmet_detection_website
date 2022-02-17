@@ -18,6 +18,7 @@ try{
             //Define Routing Path
             var indexRoute = require('./routes/indexRoute');
             var loginRoute = require('./routes/loginRoute'); 
+            var registerRoute = require('./routes/registrationRoute')
             var dashboardRoute = require('./routes/dashboardRoute');
             var detectionResultRoute = require('./routes/detectionResultRoute');
             var reportRoute = require('./routes/reportRoute');
@@ -27,6 +28,7 @@ try{
             //Static Routes File
             app.use('/',indexRoute);
             app.use('/login',loginRoute);
+            app.use('/register',registerRoute);
             app.use('/dashboard',dashboardRoute);
             app.use('/detection-result',detectionResultRoute);
             app.use('/report',reportRoute);

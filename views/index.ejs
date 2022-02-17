@@ -35,7 +35,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="needs-validation "novalidate>
+                                    <form class="needs-validation-signin "novalidate>
                                         <div class="mb-3">
                                             <label class="form-label">อีเมล</label>
                                             <input type="email" class="form-control" id="SigninUsername" name="SigninUsername" placeholder="mymail@mail.com" required />
@@ -72,19 +72,19 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="needs-validation "novalidate>
+                                    <form class="needs-validation-register "novalidate>
                                         <div class="mb-3">
                                             <label class="form-label">ชื่อ</label>
                                             <input type="text" class="form-control" id="Firstname" name="Firstname" placeholder="ชื่อ" required/>
                                             <div class="invalid-feedback">
-                                                กรุณากรอกอีเมล
+                                                กรุณากรอกชื่อ
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">นามสกุล</label>
                                             <input type="text" class="form-control" id="Lastname" name="Lastname" placeholder="นามสกุล" required/>
                                             <div class="invalid-feedback">
-                                                กรุณากรอกอีเมล
+                                                กรุณากรอกนามสกุล
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -98,14 +98,14 @@
                                             <label class="form-label">รหัสผ่าน</label>
                                             <input type="password" class="form-control" id="RegisterPassword" name="RegisterPassword" pattern=".{8,}" placeholder="รหัสผ่าน" required/>
                                             <div class="invalid-feedback">
-                                                กรุณากรอกอีเมล
+                                                รหัสผ่านอย่างน้อย 8 ตัวอักษร
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">ยืนยันรหัสผ่าน</label>
-                                            <input type="password" class="form-control" id="ConfirmRegisterPassword" name="ConfirmRegisterPassword" placeholder="ยืนยันรหัสผ่าน" required/>
+                                            <input type="password" class="form-control" id="ConfirmRegisterPassword" name="ConfirmRegisterPassword" placeholder="ยืนยันรหัสผ่าน" required oninput="check(this)" />
                                             <div class="invalid-feedback">
-                                                กรุณากรอกอีเมล
+                                                รหัสผ่านไม่ตรงกัน
                                             </div>
                                         </div>
                                         <div class="modal-footer d-block">
@@ -128,24 +128,35 @@
 <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 <script>
+    //check Is Password match confirmPassword
+    function check(input) {
+        if (input.value != document.getElementById('RegisterPassword').value) {
+            input.setCustomValidity('รหัสผ่านไม่ตรงกัน');
+        } else {
+            // input is valid -- reset the error message
+            input.setCustomValidity('');
+        }
+    }
+    
     var Feature = (function() {
-                // var startDate = $('#start_date').datepicker();
-                // var endDate = $('#end_date').datepicker();
-                // var dataTable = $('#table_id').DataTable({
-                //     searching: false,
-                //     lengthChange: false,
-                //     iDisplayLength: 10,
-                // });
-
+                //global space
+                var date = new Date();
+                var datetime = date.getFullYear()+ "-" +
+                        ("0" + (date.getUTCMonth()+1)).slice(-2) + "-" +
+                        ("0" + date.getUTCDate()).slice(-2) + " " +
+                        ("0" + date.getUTCHours()).slice(-2) + ":" +
+                        ("0" + date.getUTCMinutes()).slice(-2) + ":" +
+                        ("0" + date.getUTCSeconds()).slice(-2);
                 return {
+                    //function space
                     init: function() {
                         // var response = '<%= data %>';
-                        // console.log(response);
+                        console.log(datetime);
                     },
                     onSubmitFormSignin : function(){
-                        //validation
+                        //validation signin form
                         'use strict'
-                        var forms = document.querySelectorAll('.needs-validation')
+                        var forms = document.querySelectorAll('.needs-validation-signin')
                         Array.prototype.slice.call(forms)
                             .forEach(function (form) {
                                 form.addEventListener('submit', function (event) {
@@ -182,6 +193,47 @@
                             })
                     },
                     onSubmitFormRegister : function(){
+                        //validation register form
+                        'use strict'
+                        var forms = document.querySelectorAll('.needs-validation-register')
+                        Array.prototype.slice.call(forms)
+                            .forEach(function (form) {
+                                form.addEventListener('submit', function (event) {
+                                    if (!form.checkValidity()) {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    }else{
+                                        //pass
+                                        $.ajax({
+                                            url:"/register",
+                                            type:"POST",
+                                            data:{
+                                                Email:$('#RegisterUsername').val(),
+                                                Firstname:$('#Firstname').val(),
+                                                Lastname:$('#Lastname').val(),
+                                                Password:$('#RegisterPassword').val(),
+                                                Datetime:datetime,
+                                            },
+                                            success : function (response) {
+                                                if(response === 'Duplicate_Email'){
+                                                    Swal.fire(
+                                                    'ไม่สามารถลงมะเบียนได้',
+                                                    'อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น',
+                                                    'warning'
+                                                    )
+                                                } 
+                                            },
+                                            error: function(e) {
+                                                console.log(e);
+                                            },
+                                        })
+                                    }
+                                    form.classList.add('was-validated')
+                                    event.preventDefault();
+                                })
+                            })
+                    },
+                    onSubmitOTP : function(){
 
                     }
                 }
@@ -190,5 +242,6 @@
     jQuery(document).ready(function() {
         Feature.init();
         Feature.onSubmitFormSignin();
+        Feature.onSubmitFormRegister();
     });
 </script>

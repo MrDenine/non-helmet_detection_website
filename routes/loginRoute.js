@@ -3,20 +3,13 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const config = require('../config');
-const validation_tools = require('../utils/validation_tools');
 const encrypt_decrypt_tools = require('../utils/encrypt_decrypt_tools');
 const cookieParser = require('cookie-parser');
-const { json } = require('express');
-const { data } = require('jquery');
 
 router.use(bodyParser.urlencoded({extended : false}));
 router.use(bodyParser.json());
 
 router.use(cookieParser());
-
-// router.get('/',function(req,res,next){
-//     console.log('get login')
-// });
 
 router.post('/',function(req,res,next){
     var username = req.body.Username;
@@ -40,7 +33,6 @@ router.post('/',function(req,res,next){
                     
                     //setCookie
                     res.cookie('UDT', userdata_enc, config.cookie_options);
-                    
                     // res.status(200).send(response.data.data[0]);
                     res.status(200).send('valid');
                     return;
