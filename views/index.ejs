@@ -96,9 +96,9 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">รหัสผ่าน</label>
-                                            <input type="password" class="form-control" id="RegisterPassword" name="RegisterPassword" pattern=".{8,}" placeholder="รหัสผ่าน" required/>
+                                            <input type="password" class="form-control" id="RegisterPassword" name="RegisterPassword" pattern=".{6,}" placeholder="รหัสผ่าน" required/>
                                             <div class="invalid-feedback">
-                                                รหัสผ่านอย่างน้อย 8 ตัวอักษร
+                                                รหัสผ่านอย่างน้อย 6 ตัวอักษร
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -173,13 +173,23 @@
                                                 Password:$('#SigninPassword').val()
                                             },
                                             success : function (response) {
-                                                if(response === 'invalid'){
-                                                    Swal.fire(
-                                                    'ไม่สามารถเข้าสู่ระบบได้',
-                                                    'อีเมลหรือรหัสผ่านของคุณไม่ถูกต้อง',
-                                                    'warning'
-                                                    )
-                                                } else if (response === 'valid'){
+                                                if(response.status === 'Failed'){
+                                                    if(response.data === 'invalid'){
+                                                        Swal.fire(
+                                                        'ไม่สามารถเข้าสู่ระบบได้',
+                                                        'อีเมลหรือรหัสผ่านของคุณไม่ถูกต้อง',
+                                                        'warning'
+                                                        )
+                                                    } else if (response.data === 'Email is not verified'){
+                                                        Swal.fire(
+                                                        'ไม่สามารถเข้าสู่ระบบได้',
+                                                        'กรุณายืนยันอีเมลก่อน',
+                                                        'warning'
+                                                        ).then(function(){
+                                                            window.location.href = 'http://localhost:8000/otp/'+response.userID +'/'+ $('#SigninUsername').val();
+                                                        })
+                                                    }
+                                                } else if (response.status === 'Succeed'){
                                                     window.location.href = 'http://localhost:8000/dashboard';
                                                 }else {
                                                     console.log(response);
@@ -207,6 +217,7 @@
                                         $.ajax({
                                             url:"/register",
                                             type:"POST",
+                                            dataType: "json",
                                             data:{
                                                 Email:$('#RegisterUsername').val(),
                                                 Firstname:$('#Firstname').val(),
@@ -215,13 +226,23 @@
                                                 Datetime:datetime,
                                             },
                                             success : function (response) {
-                                                if(response === 'Duplicate_Email'){
-                                                    Swal.fire(
-                                                    'ไม่สามารถลงมะเบียนได้',
-                                                    'อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น',
-                                                    'warning'
-                                                    )
-                                                } 
+                                                console.log(response);
+                                                if(response.status === 'Failed'){
+                                                    if(response.status.data === 'Duplicate_Email'){
+                                                        Swal.fire(
+                                                        'ไม่สามารถลงมะเบียนได้',
+                                                        'อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น',
+                                                        'warning'
+                                                        )
+                                                    }
+                                                } else if(response.status === "Succeed"){
+                                                    Swal.fire({
+                                                        icon :  'success',
+                                                        title : 'ลงทะเบียนสำเร็จ',
+                                                    }).then(function(){
+                                                        window.location.href = 'http://localhost:8000/otp/'+response.data[0].user_id+'/'+$('#RegisterUsername').val();
+                                                    })
+                                                }
                                             },
                                             error: function(e) {
                                                 console.log(e);
@@ -233,9 +254,6 @@
                                 })
                             })
                     },
-                    onSubmitOTP : function(){
-
-                    }
                 }
             })();
 

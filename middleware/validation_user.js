@@ -11,23 +11,13 @@ module.exports = {
             next();
         }
     },
-    validateUserRoute:function(req,res,next){
-        const {cookies} = req;
-        var user_data = JSON.parse(encrypt_decrypt_tools.decrypt(cookies.UDT));
-        if(user_data.role == 1){
-            next();
-        }else{
-            res.status(200).redirect(config.weburl);
-            return;
-        }
-    },
     validateAdminRoute:function(req,res,next){
         const {cookies} = req;
         var user_data = JSON.parse(encrypt_decrypt_tools.decrypt(cookies.UDT));
         if(user_data.role == 2){
             next();
         }else{
-            res.status(400);
+            res.status(404).send('404');
             return;
         }
     },

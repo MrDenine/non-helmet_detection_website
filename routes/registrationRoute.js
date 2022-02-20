@@ -28,18 +28,7 @@ router.post('/',function(req,res,next){
         datetime : datetime,
     })
     .then(function(response){
-        if(response.data.status == "Failed"){
-            if(response.data.status.data == "Duplicate_Email"){
-                res.status(200).send('Duplicate_Email');
-                return;
-            }else{
-                res.status(200).send('Failed');
-                return;
-            }
-        }else{
-            res.status(200).send(response.data);
-            return;
-        }
+        res.status(200).send(response.data);
     })
     .catch(function (error) {
         res.status(400).send(error);

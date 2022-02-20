@@ -19,6 +19,7 @@ try{
             var indexRoute = require('./routes/indexRoute');
             var loginRoute = require('./routes/loginRoute'); 
             var registerRoute = require('./routes/registrationRoute')
+            var otpRoute = require('./routes/otpRoute');
             var dashboardRoute = require('./routes/dashboardRoute');
             var detectionResultRoute = require('./routes/detectionResultRoute');
             var reportRoute = require('./routes/reportRoute');
@@ -29,6 +30,7 @@ try{
             app.use('/',indexRoute);
             app.use('/login',loginRoute);
             app.use('/register',registerRoute);
+            app.use('/otp',otpRoute);
             app.use('/dashboard',dashboardRoute);
             app.use('/detection-result',detectionResultRoute);
             app.use('/report',reportRoute);

@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 router.use(cookieParser());
 
 router.post('/',function(req,res,next){
-    var username = req.body.Username;
+    var username = req.body.Username; 
     var password = req.body.Password;
     if(username && password){
         //call postLogin
@@ -31,23 +31,22 @@ router.post('/',function(req,res,next){
                     userdata = response.data.data[0];
                     userdata_enc = encrypt_decrypt_tools.encrypt(JSON.stringify(response.data.data[0]));
                     
-                    //setCookie
+                    // //setCookie
                     res.cookie('UDT', userdata_enc, config.cookie_options);
-                    // res.status(200).send(response.data.data[0]);
-                    res.status(200).send('valid');
+                    res.status(200).send(response.data);
                     return;
                 })
                 .catch(function(response){
-                    res.status(400).send(response);
+                    res.status(400).send(response.data);
                     return;
                 });
             } else {
-                res.status(200).send('invalid');
+                res.status(200).send(response.data); //echo
                 return;
             }
         })
         .catch(function (error) {
-            res.status(400).send(error);
+            res.status(400).send(error); 
             return;
         });
     }
