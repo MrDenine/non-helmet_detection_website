@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">รหัสผ่าน</label>
-                                            <input type="password" class="form-control" id="SigninPassword" name="SigninPassword" placeholder="********" required/>
+                                            <input type="password" class="form-control" id="SigninPassword" name="SigninPassword" placeholder="******" required/>
                                             <div class="invalid-feedback">
                                                 กรุณากรอกรหัสผ่าน
                                             </div>
@@ -55,7 +55,7 @@
                                             <label class="form-check-label" for="rememberMe">Remember me</label>
                                         </div> -->
                                         <div class="modal-footer d-block">
-                                            <p class="float-start"><a href="#">ลืมรหัสผ่าน</a></p>
+                                            <p class="float-start"><a href="/forgotPassword">ลืมรหัสผ่าน</a></p>
                                             <button type="submit" class="btn btn-warning float-end" id="btn-signin-submit">ยืนยัน</button>
                                         </div>
                                     </form>
@@ -150,7 +150,6 @@
                 return {
                     //function space
                     init: function() {
-                        // var response = '<%= data %>';
                         console.log(datetime);
                     },
                     onSubmitFormSignin : function(){
@@ -174,10 +173,16 @@
                                             },
                                             success : function (response) {
                                                 if(response.status === 'Failed'){
-                                                    if(response.data === 'invalid'){
+                                                    if(response.data === 'Incorrect password'){
                                                         Swal.fire(
                                                         'ไม่สามารถเข้าสู่ระบบได้',
                                                         'อีเมลหรือรหัสผ่านของคุณไม่ถูกต้อง',
+                                                        'warning'
+                                                        )
+                                                    } else if (response.data === 'Invalid email'){
+                                                        Swal.fire(
+                                                        'ไม่สามารถเข้าสู่ระบบได้',
+                                                        'กรุณาลงทะเบียนเข้าใช้งาน',
                                                         'warning'
                                                         )
                                                     } else if (response.data === 'Email is not verified'){

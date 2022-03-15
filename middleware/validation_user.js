@@ -21,6 +21,16 @@ module.exports = {
             return;
         }
     },
+    validateMemberRoute:function(req,res,next){
+        const {cookies} = req;
+        var user_data = JSON.parse(encrypt_decrypt_tools.decrypt(cookies.UDT));
+        if(user_data.role == 1){
+            next();
+        }else{
+            res.status(404).send('404');
+            return;
+        }
+    },
     validateCookieExist : function (req,res,next){
         const {cookies} = req;
         if(Object.keys(cookies).length > 0){

@@ -8,7 +8,6 @@ const cookieParser = require('cookie-parser');
 
 router.use(bodyParser.urlencoded({extended : false}));
 router.use(bodyParser.json());
-
 router.use(cookieParser());
 
 router.post('/',function(req,res,next){
@@ -23,12 +22,14 @@ router.post('/',function(req,res,next){
         })
         .then(function (response) {
             if(response.data.status == "Succeed"){
+                var userid = response.data.data[0].id;
                 //call getUserdata
                 axios
                 .get(config.servurl + '/GetDataUser/'+ response.data.data[0].id)
                 .then(function(response){
                     //get userdata
                     userdata = response.data.data[0];
+                    userdata.id = userid;
                     userdata_enc = encrypt_decrypt_tools.encrypt(JSON.stringify(response.data.data[0]));
                     
                     // //setCookie

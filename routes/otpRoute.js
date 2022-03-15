@@ -4,12 +4,11 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const config = require('../config');
 const axios = require('axios');
-const validation_tools = require('../middleware/validation_user');
-const { accessCookieExist } = require('../middleware/validation_user');
 var datetime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 router.use(cookieParser());
 router.use(bodyParser.urlencoded({extended : false}));
 router.use(bodyParser.json());
+
 router.get('/:id/:e',function(req,res,next){
     if(req.params.id){
         //post request otp by req.params.id

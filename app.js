@@ -20,22 +20,22 @@ try{
             var loginRoute = require('./routes/loginRoute'); 
             var registerRoute = require('./routes/registrationRoute')
             var otpRoute = require('./routes/otpRoute');
+            var forgotPasswordRoute = require('./routes/forgotPasswordRoute');
             var dashboardRoute = require('./routes/dashboardRoute');
             var detectionResultRoute = require('./routes/detectionResultRoute');
             var reportRoute = require('./routes/reportRoute');
-            var userAccountRoute = require('./routes/userAccountRoute');
-            var adminAccountRoute = require('./routes/adminAccountRoute')
+            var profileRoute = require('./routes/profileRoute');
 
             //Static Routes File
             app.use('/',indexRoute);
             app.use('/login',loginRoute);
             app.use('/register',registerRoute);
             app.use('/otp',otpRoute);
+            app.use('/forgotPassword',forgotPasswordRoute);
             app.use('/dashboard',dashboardRoute);
             app.use('/detection-result',detectionResultRoute);
             app.use('/report',reportRoute);
-            app.use('/user-account',userAccountRoute);
-            app.use('/admin-account',adminAccountRoute);
+            app.use('/profile',profileRoute);
 
             //Set Views engine
             //app.set('views', './views');

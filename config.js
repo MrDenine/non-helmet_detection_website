@@ -1,7 +1,7 @@
 const config = {};
 
 config.port = 8000; //website port
-config.servurl = 'http://159.223.75.113:5000'; //service url/port
+config.servurl = 'http://128.199.96.80:5000'; //service url/port
 config.weburl = 'http://localhost:8000/';
 config.cookie_options = {
     maxAge: 86400 * 1000, // 24 hours

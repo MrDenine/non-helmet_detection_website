@@ -13,7 +13,7 @@ router.use(bodyParser.json());
 router.use(cookieParser());
 
 router.get('/',function(req,res,next){
-    console.log('logout');
-});
-
+    // res.render('forgot_password');
+    res.send('forgot_password');
+})
 module.exports = router;
