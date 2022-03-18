@@ -43,16 +43,22 @@
                       <input class="form-control" id="formEmail" type="text" disabled>
                   </div>
                   <!-- Form Row-->
-                  <div class="row gx-3 mb-3">
+                  <div class="row gx-3 mb-3 needs-validation " id="profile_validate">
                       <!-- Form Group (first name)-->
                       <div class="col-md-6">
                           <label class="small mb-1" for="inputFirstName">ชื่อ</label>
-                          <input class="form-control" id="formFirstName" type="text" >
+                          <input class="form-control" id="formFirstName" type="text" required>
+                          <div class="invalid-feedback">
+                            กรุณากรอกชื่อ
+                          </div>
                       </div>
                       <!-- Form Group (last name)-->
                       <div class="col-md-6">
                           <label class="small mb-1" for="inputLastName">นามสกุล</label>
-                          <input class="form-control" id="formLastName" type="text" >
+                          <input class="form-control" id="formLastName" type="text" required>
+                          <div class="invalid-feedback">
+                            กรุณากรอกนามสกุล
+                          </div>
                       </div>
                   </div>
                 </form>
@@ -82,11 +88,27 @@
 <script>
   
   var Feature = (function() {
-              
+        var has_image = 0;
+        var countOrder = 0;
+        var image_file = '';
               return {
                   //function space
                   initButton: function() {
+                    // submit profiles
+                    $('#btn-updateUserData').on('click', function (e) {
+                    const now = new Date();
+                    const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+                    const dateLocal = new Date(now.getTime() - offsetMs);
+                    const str = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
+                    dateNow = str;
                     
+                    if ($('#formFirstName').val() != '' && $('#formLastName').val() != ''){
+                      Feature.submitUpdateUser();
+                    }else{
+                      $("#profile_validate").addClass("was-validated");
+                    }
+                    
+                  });
                   },
                   getProfile : function(){
                     $.get("/profile/getUser", function(response){
@@ -204,6 +226,29 @@
                       }
                     });
                   },
+                  submitSendImage: function () {
+                      var url = '/profile/UploadImageProfile?post=true';
+                      console.log(image_file);
+                          $.ajax({
+                              type: 'POST',
+                              url: url,
+                              data: { 
+                                      filename : image_file,
+                                  } 
+                          }) .done(function(response) {
+                              Swal.fire({
+                                  title: "สำเร็จ",
+                                  text: "บันทึกข้อมูลสำเร็จ ",
+                                  icon: "success",
+                                  confirmButtonText: "ตกลง",
+                              }).then((result) => {
+                                  if (result.isConfirmed) {
+                                      window.location.reload();
+                                  }
+                              });
+                          });
+                  },
+
                   submitRemoveImage: function () {
                     var url = '/profile/UploadImageProfile?clrimage='+ image_file;
                     image_file = "";
@@ -220,7 +265,7 @@
                     dateNow = str;
                     $.ajax({
                       type: 'POST',
-                      url: url,
+                      url: '/profile/postUpdateUser',
                       data: { 
                         firstname : $('#formFirstName').val(),
                         lastname : $('#formLastName').val(),
@@ -228,6 +273,7 @@
                       } 
                     })
                     .done(function(response) {
+                      console.log(response);
                       if (response.status == "Succeed") {
                         if (has_image == 1) {
                             Feature.submitSendImage();
@@ -262,7 +308,7 @@
           })();
 
   jQuery(document).ready(function() {
-      // Feature.init();
+      Feature.initButton();
       Feature.getProfile();
       Feature.initDropzone();
   });

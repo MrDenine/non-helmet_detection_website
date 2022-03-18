@@ -25,6 +25,7 @@ try{
             var detectionResultRoute = require('./routes/detectionResultRoute');
             var reportRoute = require('./routes/reportRoute');
             var profileRoute = require('./routes/profileRoute');
+            var accountRoute = require('./routes/accountRoute');
 
             //Static Routes File
             app.use('/',indexRoute);
@@ -36,7 +37,7 @@ try{
             app.use('/detection-result',detectionResultRoute);
             app.use('/report',reportRoute);
             app.use('/profile',profileRoute);
-
+            app.use('/useraccount',accountRoute);
             //Set Views engine
             //app.set('views', './views');
             app.set('views',[

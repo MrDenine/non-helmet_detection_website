@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const config = require('../config');
 const multer = require('multer');
+const FormData = require('form-data');
+const fs = require('fs');
 const encrypt_decrypt_tools = require('../utils/encrypt_decrypt_tools');
 const {validateCookieExist ,validateAdminRoute,validateDpmRoute,validateMember,accessCookieExist} = require('../middleware/validation_user');
 const {getUserRole,getUserData} = require('../utils/initial_data_tools');
@@ -39,7 +41,7 @@ router.post('/postUpdateUser',function(req,res){
         user_id : post_id ,
         firstname : post_firstname,
         lastname :post_lastname,
-        date : post_date,
+        datetime : post_date,
     })
     .then(function(response){
         res.status(200).send(response.data); 
@@ -59,9 +61,10 @@ router.post('/UploadImageProfile',upload.single('file'),(req,res,next)=>{
     if(req.query.post){
       //request
       var post_filename = req.body.filename;
+      console.log(post_filename);
       //post
       var form = new FormData();
-      form.append('file',fs.readFileSync('./profiles/'+post_filename) ,getUserData(req).id + Date.now() +'.jpg');
+      form.append('file',fs.readFileSync('./profiles/'+post_filename) ,getUserData(req).id +'_'+ Date.now() +'.jpg');
       form.append('user_id',getUserData(req).id)
       axios({
         method: 'post',

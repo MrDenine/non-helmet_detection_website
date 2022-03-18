@@ -2,11 +2,11 @@
     <main class="mt-5 pt-3">
       <div class="container-fluid">
         <!-- title -->
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-12">
               <h4 id="top">หน้าจัดการข้อมูลบุคคลที่ไม่สวมใส่หมวกนิรภัย</h4>
             </div>
-        </div>
+        </div> -->
         <!-- form -->
         <div class="row">
           <div class="col-md-12">
@@ -16,25 +16,28 @@
                     <div class="row mx-5" id="dataform_validate">
                         <div class="col-md-5">
                           <div class="row mb-3">
-                            <div name="Member_image" id="file" class="dropzone text-center shadow-sm" style="background-color:#ffff; border-color:#ced4da; border-radius: 1.25rem;">
-                                <div class="dz-default dz-message" style="height: 158px;"></div>
+                            <div name="Member_image" id="image_file_id" class="dropzone text-center shadow-sm" style="background-color:#ffff; border-color:#ced4da; border-radius: 1.25rem;">
+                                <!-- <img class="logo" src="http://128.199.96.80:5000/detectedImage/rider_1021647076764667.jpg" style="height:320px;width:160px;"> -->
                             </div>
                             <label class="form-label text-center">รูปภาพ</label>
                         </div>
                     </div>
                     <!-- form -->
-                    <div class="col-md-7">
-                      <div class="row mb-3">
+                    <div class="col-md-7"> 
+                      <div class="row mb-3 " id="obj_validate">
                         <div class="col-lg-6">
                           <label class="form-label">ป้ายทะเบียน</label>
                           <div class="input-group">
-                              <input type="text" class="form-control shadow-sm rounded-3" id="licence-plate_id" >
-                          </div>
+                              <input type="text" class="form-control shadow-sm rounded-3" id="licence-plate_id" required>
+                              <div class="invalid-feedback">
+                                กรุณาระบุ หมายเลขทะเบียน
+                              </div>
+                            </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="form-label">สถานะตรวจสอบ</label>
-                          <select class="form-select" name="select-status">
-                            <option selected>กรุณาเลือกสถานะ...</option>
+                          <select class="form-select" id="status_id" name="select-status">
+                            <!-- <option selected>...</option> -->
                             <option value="10">“ยังไม่ถูกพิจารณา”</option>
                             <option value="20">“ถูกพิจารณาแล้ว”</option>
                             <option value="30">“ถูกดำเนินคดีแล้ว”</option>
@@ -42,12 +45,16 @@
                           </select>
                         </div>
                       </div>
-                      <div class="row mb-3">
+                      <div class="row mb-3" >
                         <div class="col-lg-12">
                           <label class="form-label">หมายเหตุ</label>
                           <div class="input-group">
-                              <input type="text" class="form-control shadow-sm rounded-3 " id="licence-plate_id" >
-                          </div>
+                              <!-- <input type="text" class="form-control shadow-sm rounded-3 " id="description_id" > -->
+                              <textarea class="form-control shadow-sm rounded-3" rows="7" id="description_id"></textarea>
+                              <div class="invalid-feedback">
+                                กรุณาระบุ หมายเหตุ
+                              </div>
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -55,8 +62,8 @@
                     <div class="row">
                     <hr class="mb-3">
                         <div class="col-md-12 text-end">
-                            <div class="btn btn-outline-secondary shadow-sm" id="cancel_addMember"><i class="fas fa-times me-2"></i>ยกเลิก</div>
-                            <div class="btn btn-success shadow-sm" id="submit_addMember"><i class="fas fa-save me-2"></i>บันทึก</div>
+                            <div class="btn btn-outline-secondary shadow-sm" id="cancel_detection"><i class="fas fa-times me-2"></i>ยกเลิก</div>
+                            <div class="btn btn-success shadow-sm" id="submit_detection"><i class="fas fa-save me-2"></i>บันทึก</div>
                         </div>
                     </div>
                 </div>
@@ -70,15 +77,16 @@
             <div class="card">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-7">
+                  <div class="col-md-6">
                     <h5 class="pt-2">ตารางข้อมูลบุคคลที่ไม่สวมใส่หมวกนิรภัย</h5>
                   </div>
-                  <div class="col-md-5">
-                    <div class="input-group shadow-sm mb-2">
-                       <input type="text" class="form-control" placeholder="ป้ายทะเบียน">
-                        <div class="btn btn-secondary" id=""><i class="fas fa-search me-2"></i>ค้นหา</div>
-                    </div>
-                </div>
+                  <div class="col-md-3 mb-3">
+                      <input type="text" class="form-control shadow-sm" id="equipmentSearch" placeholder="ค้นหาข้อมูลป้ายทะเบียน, สถานะ">
+                  </div>
+                  <div class="col-md-2 mb-3">
+                      <div class="btn btn-outline-secondary shadow-sm" id="clear"><i class="fas fa-times me-2"></i>ยกเลิก</div>
+                      <div class="btn btn-success shadow-sm" id="search"><i class="fas fa-search me-2"></i>ค้นหา</div>
+                  </div>
                 </div>
                 <div class="table-responsive">
                   <table id="table-detection-id" class="table table-striped my-2" style="width: 100%">
@@ -88,6 +96,7 @@
                         <th class="text-center">ป้ายทะเบียน</th>
                         <th class="text-center">พิกัด</th>
                         <th class="text-center">วันเวลาที่ตรวจจับ</th>
+                        <th class="text-center">ผู้ส่ง</th>
                         <th class="text-center">สถานะ</th>
                         <th class="text-center">จัดการข้อมูล</th>
                       </tr>
@@ -104,7 +113,7 @@
       </div>
     </main>
   </body>
-  <
+  
 
 </html>
 <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -114,7 +123,10 @@
 <script type="text/javascript" src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 
 <script>
-  var Feature = (function(){
+  var Feature = (
+    function(){
+      var aaSearch = "";
+      var obj_id_update = 0;
       var dataTable = $('#table-detection-id').DataTable({
           language: {emptyTable: "ไม่พบข้อมูลตรวจจับ"},
           searching: false,
@@ -158,6 +170,12 @@
             },
             {
               data : function(data){
+                return data['firstname'] + ' ' + data['lastname'];
+              },
+              className : 'text-center',
+            },
+            {
+              data : function(data){
                 switch(data['status']) {
                   case 10:
                     return "“ยังไม่ถูกพิจารณา”";
@@ -170,10 +188,6 @@
                     break;
                   default:
                     return "“ไม่สามารถตรวจสอบได้”";
-                  // 10 =“ยังไม่ถูกพิจารณา” , 
-                  // 20 = “ถูกพิจารณาแล้ว” ,
-                  // 30 = “ถูกดำเนินคดีแล้ว” ,
-                  // 40 = “ไม่สามารถตรวจสอบได้"
                 }
               },
               className : 'text-center',
@@ -182,7 +196,7 @@
               data: function (data) {
                   var setButton = ""
                       setButton = '<a class="btn btn-danger btn-sm shadow-sm" name="delete_data" data-id="' + data['id'] + '"><i class="fas fa-trash me-2"></i>ลบ</a>\
-                                    <a class="btn btn-warning btn-sm shadow-sm" name="edit_data" data-id="' + data['id'] + '" data-status="' + data['status'] + '" data-licence-number="' + data['licence_number'] + '">\
+                                    <a class="btn btn-warning btn-sm shadow-sm" name="edit_data" data-id="' + data['id'] + '"data-image = "'+data['image_detection']+'" data-status="' + data['status'] + '" data-licence-number="' + data['licence_number'] + '">\
                                     <i class="fas fa-pen me-2"></i>แก้ไข</a>'; 
                   return setButton;
               },
@@ -192,25 +206,23 @@
           serverSide: true,
           ajaxSource: '/detection-result/search',
           serverData: function (sSource, aaData, fnCallback, oSettings) {
-                // aaData.push({ "name": "rfid", "value": aaRfid});
-                // aaData.push({ "name": "search", "value": aaSearch});
+                aaData.push({ "name": "search", "value": aaSearch});
                 oSettings.jqXHR = $.ajax({
                     dataType: 'json',
                     type: "POST",
                     url: sSource,
                     data: aaData,
                     success: function (response) {
-                        // if (response.status === "Succeed") {
-                        //     if (response.data === "No Reverting information") {
-                        //         response = {"aaData":[], "iTotalRecords": 0, "iTotalDisplayRecords": 0};
-                        //     } else {
-                        //         var response = response.data;
-                        //             response = {"aaData": response, "iTotalRecords": response.length, "iTotalDisplayRecords": response.length};
-                        //     }
-                        // } else {
-                        //     response = {"aaData":[], "iTotalRecords": 0, "iTotalDisplayRecords": 0};
-                        // }
-                      
+                        if (response.status === "Succeed") {
+                            // if (response.data === "No information") {
+                            //     response = {"aaData":[], "iTotalRecords": 0, "iTotalDisplayRecords": 0};
+                            // } else {
+                                var response = response.data;
+                                    response = {"aaData": response, "iTotalRecords": response.length, "iTotalDisplayRecords": response.length};
+                            // }
+                        } else {
+                            response = {"aaData":[], "iTotalRecords": 0, "iTotalDisplayRecords": 0};
+                        }
                         fnCallback(response);
                     }
                 });
@@ -226,31 +238,24 @@
                     if ($('#ObjectForm').is('.collapse:not(.show)')) { // not show
                         $('#ObjectForm').collapse("toggle");
                     }
-                    // // set value
-                    id_update = data.id;
+                    // set value
+                    obj_id_update = data.id;
                     $('#licence-plate_id').val(data.licenceNumber);
-                    $('select[select-status]').val(40);
-                    
-                    console.log(data.id);
-                    console.log(data.licenceNumber);
-                    console.log(data.status);
-                        // image_file = data.image_file;
-
-                        // if (data.image_file != ""){
-                        //     var mockFile = {id: data.rfid, name: 'member.jpg', size: 102400 };
-                        //         dropzoneAdd.emit('addedfile', mockFile);
-                        //         var file_url = 'http://157.230.254.198:3000/profiles/' + data.image_file;
-
-                        //             dropzoneAdd.emit('thumbnail', mockFile, file_url);
-                        //             dropzoneAdd.emit('complete', mockFile);
-                        //             dropzoneAdd.files.push(mockFile);
-                                    
-                        //             var _this = $(this.element);
-                        //                 _this.find('.dz-message').addClass('hidden'); 
-
-                        //             image_file = data.image_file;        
-                        // }
+                    $('#status_id').val(data.status);
+                    var element =  document.getElementById('img-detect_id');
+                    console.log(element);
+                    if (typeof(element) == 'undefined' || element == null)
+                    {
+                      var img = document.createElement("img");
+                      img.src = 'http://128.199.96.80:5000/detectedImage/' + data.image;
+                      img.width = '160';
+                      img.height = '320';
+                      img.className = "logo";
+                      img.id = 'img-detect_id'
+                      document.getElementById("image_file_id").appendChild(img);
+                    }
                 });
+                
             //deleteButton on table
             $('#table-detection-id').on('click', '[name="delete_data"]', function () {
                     var data = $(this).data();
@@ -270,6 +275,66 @@
                             }
                         });
                 });
+
+                $('#submit_detection').on('click', function (e) {
+                    const now = new Date();
+                    const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+                    const dateLocal = new Date(now.getTime() - offsetMs);
+                    const str = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
+                    dateNow = str;
+                    if ($('#licence-plate_id').val() != ''){
+                      Feature.submitUpdateObj();
+                    }else{
+                      $("#obj_validate").addClass("was-validated");
+                    }
+                    
+                });
+
+            $('#cancel_detection').on('click', function (e) {
+                if ($('#ObjectForm').is('.collapse.show')) { // show
+                        $('#ObjectForm').collapse("toggle"); 
+                        $("#obj_validate").removeClass("was-validated");
+                }
+                    // clear value
+                    $('#licence-plate_id').val('');
+                    $('#img-detect_id').remove();
+                });
+              
+          },
+          submitUpdateObj: function () {
+                const now = new Date();
+                  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+                  const dateLocal = new Date(now.getTime() - offsetMs);
+                  const str = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
+                  dateNow = str;
+                
+                    $.ajax({
+                            type: 'POST',
+                            url: '/detection-result/submit',
+                            data: { 
+                              obj_id : obj_id_update,
+                              status : $('#status_id').val(),
+                              licence_number : $('#licence-plate_id').val(),
+                              description : $('#description_id').val(),
+                              datetime : dateNow,
+                            } 
+                        })
+                    .done(function(response) {
+                      console.log(response.data);
+                        if (response.status == "Succeed") {
+                            
+                          Swal.fire({
+                              title: "สำเร็จ",
+                              text: "บันทึกการแก้ไขข้อมูลสำเร็จ ",
+                              icon: "success",
+                              confirmButtonText: "ตกลง",
+                          }).then((result) => {
+                              if (result.isConfirmed) {
+                                  window.location.reload();
+                              }
+                          });    
+                        } 
+                    });
           },
           submitRemoveObject: function () {
             const _now = new Date();
