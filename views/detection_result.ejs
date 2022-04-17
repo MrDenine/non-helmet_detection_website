@@ -81,10 +81,10 @@
                     <h5 class="pt-2">ตารางข้อมูลบุคคลที่ไม่สวมใส่หมวกนิรภัย</h5>
                   </div>
                   <div class="col-md-3 mb-3">
-                      <input type="text" class="form-control shadow-sm" id="equipmentSearch" placeholder="ค้นหาข้อมูลป้ายทะเบียน, สถานะ">
+                      <input type="text" class="form-control shadow-sm" id="equipmentSearch" placeholder="ค้นหาข้อมูลป้ายทะเบียน">
                   </div>
                   <div class="col-md-2 mb-3">
-                      <div class="btn btn-outline-secondary shadow-sm" id="clear"><i class="fas fa-times me-2"></i>ยกเลิก</div>
+                      <div class="btn btn-outline-secondary shadow-sm" id="search-clear"><i class="fas fa-times me-2"></i>ยกเลิก</div>
                       <div class="btn btn-success shadow-sm" id="search"><i class="fas fa-search me-2"></i>ค้นหา</div>
                   </div>
                 </div>
@@ -275,18 +275,24 @@
                             }
                         });
                 });
+            $('#search-clear').on('click', function (e) {
+              $('#equipmentSearch').val('');
+            });
 
-                $('#submit_detection').on('click', function (e) {
-                    const now = new Date();
-                    const offsetMs = now.getTimezoneOffset() * 60 * 1000;
-                    const dateLocal = new Date(now.getTime() - offsetMs);
-                    const str = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
-                    dateNow = str;
-                    if ($('#licence-plate_id').val() != ''){
-                      Feature.submitUpdateObj();
-                    }else{
-                      $("#obj_validate").addClass("was-validated");
-                    }
+            $('#search').on('click', function (e) {
+              
+            });
+            $('#submit_detection').on('click', function (e) {
+                const now = new Date();
+                const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+                const dateLocal = new Date(now.getTime() - offsetMs);
+                const str = dateLocal.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ");
+                dateNow = str;
+                if ($('#licence-plate_id').val() != ''){
+                  Feature.submitUpdateObj();
+                }else{
+                  $("#obj_validate").addClass("was-validated");
+                }
                     
                 });
 
